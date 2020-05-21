@@ -522,7 +522,7 @@ public class League {
             this.userStatus = "visitor";
     }
 
-    public boolean addGoalDetail(String playerName, String teamA, String teamB, String time) {
+    public boolean addGoalDetail(String playerName, String teamA, String teamB, String time,int battleResult,String battleScore) {
         Connection conn;
         String driver = "com.mysql.cj.jdbc.Driver";
         String url = "jdbc:mysql://localhost:3306/football?serverTimezone=UTC&characterEncoding=utf-8";
@@ -543,6 +543,20 @@ public class League {
             ps.setString(3, teamB);
             ps.setTimestamp(4, sqlTime);
             ps.executeUpdate();
+            String getGoalsql = "select playerscore from footballplayer where playername='" + playerName +
+                    "'";
+            ResultSet rs = statement.executeQuery(getGoalsql);
+            int i = 0;
+            while (rs.next()){
+                i = rs.getInt("playerscore");
+            }
+            String addGoal = "update footballplayer set playerscore = "+(i+1);
+            statement.executeUpdate(addGoal);
+//            String updateBattle = "update battledetail set battleresult = "+battleResult+",battlescore='" +battleScore+
+//                    "'where teamone='" +teamA+
+//                    "' and teamtwo='" +teamB+
+//                    "'and battletime="+sqlTime+"";
+//            statement.executeUpdate(updateBattle);
             statement.execute("SET FOREIGN_KEY_CHECKS=1");//启动外键约束检查
             conn.close();
             return true;
@@ -562,12 +576,11 @@ public class League {
             Class.forName(driver);
             conn = DriverManager.getConnection(url, user, password);
             Statement statement = conn.createStatement();
-            String sql = "INSERT INTO footballplayer(playerfoul) values (?) where playername='" + foulInfo[0]
+            String sql = "Update footballplayer set playerfoul ='" + foulInfo[2] + ":" + foulInfo[3] +
+                    "' where playername='" + foulInfo[0]
                     + "'" + "and playerteamname='" + foulInfo[1] +
                     "'";
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setString(1, foulInfo[2] + ":" + foulInfo[3]);
-            ps.executeUpdate();
+            statement.executeUpdate(sql);
             statement.close();
             conn.close();
             return true;

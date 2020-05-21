@@ -156,7 +156,7 @@ public class UpdateDataView extends Pane {
                     container.clearConstraints(goalInfoInput(theLeague, "", "", 0, 0, -1));
                     container.add(goalInfoInput(theLeague, battleSelect[0], battleSelect[1], Integer.valueOf(teamAGoal.getText()), Integer.valueOf(teamBGoal.getText()), 0), 2, 2, 5, 6);
                     container.clearConstraints(foulInfoInput(theLeague));
-                    container.add(foulInfoInput(theLeague),2, 8, 5, 4);
+                    container.add(foulInfoInput(theLeague), 2, 8, 5, 4);
                 } else {
                     goalInfoInput(theLeague, "", "", 0, 0, -1);
                 }
@@ -264,6 +264,11 @@ public class UpdateDataView extends Pane {
                              * */
                             goalDetail[0] += (playerName + " " + teamAName + " " + teamBName + " " + formatTime + " ");
                         }
+                        button.setText("本条信息已提交");
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                        alert.setContentText("本条信息提交成功！请勿重复提交 ");
+                        alert.showAndWait();
+
                     }
                 });
                 vBox.getChildren().addAll(datePicker, button);
@@ -282,9 +287,17 @@ public class UpdateDataView extends Pane {
             public void handle(MouseEvent event) {
                 String[] goalData = goalDetail[0].split(" ");
                 for (int i = 0; i < (teamAGoal + teamBGoal) * 5; i += 5) {
-                    theLeague.addGoalDetail(goalData[i + 0], goalData[i + 1], goalData[i + 2], goalData[i + 3] + " " + goalData[i + 4]);
+                    int result;
+                    if (teamAGoal > teamBGoal) {
+                        result = 1;
+                    } else if (teamAGoal < teamBGoal) {
+                        result = -1;
+                    } else result = 0;
+                    theLeague.addGoalDetail(goalData[i + 0], goalData[i + 1], goalData[i + 2], goalData[i + 3] + " " + goalData[i + 4], result, "" + teamAGoal + ":" + teamBGoal);
                 }
-                System.out.println("信息写入成功！");
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setContentText("信息提交成功！");
+                alert.showAndWait();
             }
         });
         goalInfoInput.add(commit, 4, 0, 1, 6);
@@ -378,7 +391,15 @@ public class UpdateDataView extends Pane {
                     alert.setContentText("犯规信息或和惩罚信息不应为空");
                     alert.showAndWait();
                 } else {
-                    theLeague.addFoul(foulInfo);
+                    if (theLeague.addFoul(foulInfo)) {
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                        alert.setContentText("信息添加成功！");
+                        alert.showAndWait();
+                    } else {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setContentText("检查球员是否属于所属球队！");
+                        alert.showAndWait();
+                    }
                 }
             }
         });
