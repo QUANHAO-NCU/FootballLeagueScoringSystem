@@ -23,7 +23,7 @@ public class AddDataView extends Pane {
     public AddDataView(Stage stage, League theLeague) {
         this.setMinSize(1200, 600);
         this.setMaxSize(1920, 1080);
-        addTeam();
+        addTeam(theLeague);
         addPlayer(theLeague);
         addJudger(theLeague);
         Button back = new Button("返回");
@@ -44,7 +44,7 @@ public class AddDataView extends Pane {
         this.getChildren().add(back);
     }
 
-    private void addTeam() {
+    private void addTeam(League theLeague) {
         /**
          * 添加队伍
          * */
@@ -284,7 +284,7 @@ public class AddDataView extends Pane {
                     alert.showAndWait();
                 }
                 Team team = new Team(teamName, teamRank, winNum, loseNum, drawNum, goalNum, goalLostNum, groupName, score);
-                if(team.insertData()){
+                if(theLeague.addTeam(team)){
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setContentText("球队添加成功");
                     alert.showAndWait();
@@ -410,7 +410,7 @@ public class AddDataView extends Pane {
                     alert.showAndWait();
                 }
                 Player player = new Player(playerName, teamName, "", score, rank, "");
-                player.insertData();
+                theLeague.addPlayer(player);
             }
         });
         this.getChildren().addAll(playerNameL, playerNameInput, teamNameL, teamNameInput, container, registerPlayer);

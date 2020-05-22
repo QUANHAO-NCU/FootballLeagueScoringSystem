@@ -78,10 +78,10 @@ public class TeamView extends Pane {
         this.players.setMinHeight(topButton.getButtonHeight() * 10);
         this.players.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
         playerC.setMaxWidth(topButton.getButtonWidth());
-        for (int i = 0; thisTeam.getPlayers()[i]!=null; i++) {
+        for (int i = 0; i<theLeague.getPlayers(thisTeam.getTeamName()).size(); i++) {
             Button player = new Button();
             player.setFont(new Font("Microsoft YaHei", 24));
-            player.setText(thisTeam.getPlayers()[i].getName());
+            player.setText(theLeague.getPlayers(thisTeam.getTeamName()).get(i).getName());
             player.setTextAlignment(TextAlignment.CENTER);
             player.setMinSize(topButton.getButtonWidth(), topButton.getButtonHeight());
             player.setBackground(new Background(new BackgroundFill(Color.LAVENDER, null, null)));
@@ -104,7 +104,7 @@ public class TeamView extends Pane {
         this.schedule.setMinHeight(topButton.getButtonHeight() * 15 / 2);
         this.schedule.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
         gameC.setMaxWidth(rank.getLayoutX() + rank.getMinWidth() - this.schedule.getLayoutX());
-        String[] gameInfo = thisTeam.getGameInfo();
+        String[] gameInfo = theLeague.getGameInfo(thisTeam);
         for (int i = 0; gameInfo[i]!=null; i++) {
             Button game = new Button();
             game.setFont(new Font("Microsoft YaHei", 24));

@@ -29,8 +29,6 @@ import java.util.List;
 public class UpdateDataView extends Pane {
     private GridPane container;
     private String[] teamSelect = new String[2];
-    private String goalDetail;
-    private String[] foulInfo;
 
     private String[] getTeamSelect() {
         return teamSelect;
@@ -67,13 +65,13 @@ public class UpdateDataView extends Pane {
         battleSelector.add(tips, 0, 0, 2, 2);
         ScrollPane scrollPane = new ScrollPane();
         GridPane battles = new GridPane();
-        Battle[] noStartBattles = theLeague.getNoStartBattle();
+        List<Battle> noStartBattles = theLeague.getNoStartBattle();
         battles.setVgap(1);
-        for (int i = 0; noStartBattles[i] != null; i++) {
-            Timestamp battleTime = noStartBattles[i].getBattleTime();  //对战时间
-            String teamA = noStartBattles[i].getTeamA();
-            String teamB = noStartBattles[i].getTeamB();
-            String battleSide = noStartBattles[i].getBattleSide();
+        for (int i = 0; i<noStartBattles.size(); i++) {
+            Timestamp battleTime = noStartBattles.get(i).getBattleTime();  //对战时间
+            String teamA = noStartBattles.get(i).getTeamA();
+            String teamB = noStartBattles.get(i).getTeamB();
+            String battleSide = noStartBattles.get(i).getBattleSide();
             org.kordamp.bootstrapfx.scene.layout.Panel panel = new org.kordamp.bootstrapfx.scene.layout.Panel();
             panel.getStyleClass().addAll("panel-primary", colors[i % 3], "panel-default");
             panel.setPadding(new Insets(8, 8, 8, 8));
@@ -87,7 +85,6 @@ public class UpdateDataView extends Pane {
                 public void handle(MouseEvent event) {
                     teamSelect[0] = teamA;
                     teamSelect[1] = teamB;
-                    goalDetail = null;
                     container.clearConstraints(goalInput(theLeague, teamSelect));
                     container.clearConstraints(goalInfoInput(theLeague, "", "", 0, 0, -1));
                     container.add(goalInput(theLeague, teamSelect), 2, 0, 5, 2);

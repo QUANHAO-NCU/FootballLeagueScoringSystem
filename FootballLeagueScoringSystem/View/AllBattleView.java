@@ -1,15 +1,11 @@
 package FootballLeagueScoringSystem.View;
 
-import FootballLeagueScoringSystem.Module.Battle;
-import FootballLeagueScoringSystem.Module.League;
+import FootballLeagueScoringSystem.Module.*;
 
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
@@ -18,6 +14,7 @@ import javafx.util.StringConverter;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 public class AllBattleView extends Pane {
     public Stage stage;
@@ -35,7 +32,7 @@ public class AllBattleView extends Pane {
          * @author :Long
          * 生成所有赛程
          */
-        Battle[] battles =  battleSql.getAllBattles();
+        List<Battle> battles =  battleSql.getAllBattles();
         GridPane gridPane = new GridPane();
         gridPane.setHgap(10);        //修改为battles.length/3
         gridPane.setVgap(4);
@@ -79,21 +76,21 @@ public class AllBattleView extends Pane {
                 gridPane2.setVgap(3);
                 gridPane2.setPadding(new Insets(20,20,20,20));
                 String date = datePicker.getValue().toString();
-                Battle[] oneDayBattles = battleSql.getOneDayBattles(date);
-                if(oneDayBattles[0]==null){
+                List<Battle> oneDayBattles = battleSql.getOneDayBattles(date);
+                if(oneDayBattles.isEmpty()){
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setContentText(date+" is no battle");
                     //alert.text
                     alert.show();
                 }
                 else {
-                    for(int i=0;oneDayBattles[i]!=null;i++){
-                        Timestamp battleTime = oneDayBattles[i].getBattleTime();  //对战时间
-                        String teamA = oneDayBattles[i].getTeamA();
-                        String teamB = oneDayBattles[i].getTeamB();
-                        String battleSide = oneDayBattles[i].getBattleSide();      //比赛场地
-                        int battleResult = oneDayBattles[i].getBattleResult();    //比赛结果，1表示A胜，0表示平局，-1表示A负
-                        String battleScore = oneDayBattles[i].getBattleScore();
+                    for(int i=0;i<oneDayBattles.size();i++){
+                        Timestamp battleTime = oneDayBattles.get(i).getBattleTime();  //对战时间
+                        String teamA = oneDayBattles.get(i).getTeamA();
+                        String teamB = oneDayBattles.get(i).getTeamB();
+                        String battleSide = oneDayBattles.get(i).getBattleSide();      //比赛场地
+                        int battleResult = oneDayBattles.get(i).getBattleResult();    //比赛结果，1表示A胜，0表示平局，-1表示A负
+                        String battleScore = oneDayBattles.get(i).getBattleScore();
                         org.kordamp.bootstrapfx.scene.layout.Panel panel = new org.kordamp.bootstrapfx.scene.layout.Panel();
                         panel.getStyleClass().addAll("panel-primary",colors[i%3],"panel-default");
                         panel.setPadding(new Insets(20,20,20,20));
@@ -122,13 +119,13 @@ public class AllBattleView extends Pane {
             }
         });
 
-        for(int i=0;battles[i]!=null;i++){
-            Timestamp battleTime = battles[i].getBattleTime();  //对战时间
-            String teamA = battles[i].getTeamA();
-            String teamB = battles[i].getTeamB();
-            String battleSide = battles[i].getBattleSide();      //比赛场地
-            int battleResult = battles[i].getBattleResult();    //比赛结果，1表示A胜，0表示平局，-1表示A负
-            String battleScore = battles[i].getBattleScore();
+        for(int i=0;i<battles.size();i++){
+            Timestamp battleTime = battles.get(i).getBattleTime();  //对战时间
+            String teamA = battles.get(i).getTeamA();
+            String teamB = battles.get(i).getTeamB();
+            String battleSide = battles.get(i).getBattleSide();      //比赛场地
+            int battleResult = battles.get(i).getBattleResult();    //比赛结果，1表示A胜，0表示平局，-1表示A负
+            String battleScore = battles.get(i).getBattleScore();
             org.kordamp.bootstrapfx.scene.layout.Panel panel = new org.kordamp.bootstrapfx.scene.layout.Panel();
             panel.getStyleClass().addAll("panel-primary",colors[i%3],"panel-default");
             panel.setPadding(new Insets(20,20,20,20));

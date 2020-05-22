@@ -11,7 +11,7 @@ import java.io.IOException;
 
 public class ViewTrans {
     public void toPlayerView(League theLeague, Stage stage, String teamName, String playerName) {
-        Player player = new Player(teamName, playerName);
+        Player player = theLeague.getPlayer(teamName, playerName);
         PlayerView playerView = new PlayerView(player, stage, theLeague);
         Scene scene = new Scene(playerView);
         scene.getStylesheets().add("org/kordamp/bootstrapfx/bootstrapfx.css");
@@ -19,7 +19,7 @@ public class ViewTrans {
     }
 
     public void toTeamView(League theLeague, Stage stage, String teamName) {
-        Team team = new Team(teamName);
+        Team team = theLeague.getTeam(teamName);
         TeamView teamView = new TeamView(team, stage, theLeague);
         Scene scene = new Scene(teamView);
         scene.getStylesheets().add("org/kordamp/bootstrapfx/bootstrapfx.css");

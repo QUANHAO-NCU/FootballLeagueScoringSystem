@@ -4,10 +4,7 @@ import FootballLeagueScoringSystem.Control.ViewTrans;
 import FootballLeagueScoringSystem.Module.League;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -63,6 +60,10 @@ public class LoginView extends Pane {
         confirm.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setContentText("正在加载信息，请耐心等待...");
+                alert.showAndWait();
+                confirm.setText("信息加载中");
                 String account = accountInput.getText();
                 String password = passwordInput.getText();
                 if(theLeague.checkUser(account,password)!=null){
@@ -80,13 +81,17 @@ public class LoginView extends Pane {
         visitor.setLayoutX(confirm.getLayoutX()+confirm.getMinWidth());
         visitor.setLayoutY(confirm.getLayoutY());
         visitor.setMinSize(80,50);
-        visitor.setOnMouseClicked(new EventHandler<MouseEvent>() {
+        visitor.setOnMouseClicked(new EventHandler<>() {
             @Override
             public void handle(MouseEvent event) {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setContentText("正在加载信息，请耐心等待...");
+                alert.showAndWait();
+                visitor.setText("信息加载中...");
                 ViewTrans vt = new ViewTrans();
                 theLeague.setUserStatus("游客登录");
                 try {
-                    vt.toMainView(theLeague,stage);
+                    vt.toMainView(theLeague, stage);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

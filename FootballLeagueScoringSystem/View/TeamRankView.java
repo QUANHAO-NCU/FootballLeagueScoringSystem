@@ -15,6 +15,9 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.paint.*;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+
+import java.util.List;
+
 /***
  * @author QuanHao ,
  * @author Long ,
@@ -39,8 +42,8 @@ public class TeamRankView extends Accordion{
         gm1AP.setLayoutX(0);
         gm1AP.setLayoutY(0);
         //
-        theLeague.teamSort("男子甲组");
-        Team[] gm1Teams = theLeague.getTeams("男子甲组");
+        theLeague.setTeamRank("男子甲组");
+        List<Team> gm1Teams = theLeague.getTeams("男子甲组");
         RankData(gm1Teams, gm1AP,stage,theLeague);
         //
         gm1SP.setContent(gm1AP);
@@ -60,7 +63,7 @@ public class TeamRankView extends Accordion{
         AnchorPane gm2AP = new AnchorPane();
         gm2AP.setMinSize(1200, 435);
         //
-        Team[] gm2Teams = theLeague.getTeams("男子乙组");
+        List<Team> gm2Teams = theLeague.getTeams("男子乙组");
         RankData(gm2Teams, gm2AP,stage,theLeague);
         //
         gm2SP.setContent(gm2AP);
@@ -80,7 +83,7 @@ public class TeamRankView extends Accordion{
         AnchorPane gfAP = new AnchorPane();
         gfAP.setMinSize(1200, 435);
         //
-        Team[] gfTeams = theLeague.getTeams("女子组");
+        List<Team> gfTeams = theLeague.getTeams("女子组");
         RankData(gfTeams, gfAP,stage,theLeague);
         //
         gfSP.setContent(gfAP);
@@ -100,7 +103,7 @@ public class TeamRankView extends Accordion{
         AnchorPane gaAP = new AnchorPane();
         gaAP.setMinSize(1200, 400);
         //
-        Team[] gaTeams = theLeague.getTeams("成年组");
+        List<Team> gaTeams = theLeague.getTeams("成年组");
         RankData(gaTeams, gaAP,stage,theLeague);
         //
         gaSP.setContent(gaAP);
@@ -109,8 +112,8 @@ public class TeamRankView extends Accordion{
         groupAdult.setContent(gaAP0);
         this.getPanes().addAll(groupMale1, groupMale2, groupFemale, groupAdult);
     }
-    private void RankData(Team[] Teams, AnchorPane AP,Stage stage,League theLeague) {
-        if (Teams[0] == null) {
+    private void RankData(List<Team> teams, AnchorPane AP,Stage stage,League theLeague) {
+        if (teams.isEmpty()) {
             //数据库中没有查到对应数据
             Button NoData = new Button();
             NoData.getStyleClass().addAll("btn","btn-warning");
@@ -121,17 +124,17 @@ public class TeamRankView extends Accordion{
             AP.getChildren().add(NoData);
             AP.setBackground(new Background(new BackgroundFill(Color.LAVENDERBLUSH,null,null)));
         } else {
-            for (int i = 0; i<16&&Teams[i] != null; i++) {
+            for (int i = 0; i<teams.size(); i++) {
                 Button Rank = new Button();
                 Rank.setBackground(new Background(new BackgroundFill(Color.LAVENDERBLUSH,null,null)));
-                Rank.setText("" + Teams[i].getTeamRank());
+                Rank.setText("" + teams.get(i).getTeamRank());
                 Rank.setLayoutX(0);
                 Rank.setLayoutY(i * 30);
                 Rank.setMinSize(150, 30);
 
                 Button name = new Button();
                 name.setBackground(new Background(new BackgroundFill(Color.LAVENDERBLUSH,null,null)));
-                name.setText(Teams[i].getTeamName());
+                name.setText(teams.get(i).getTeamName());
                 name.setLayoutX(Rank.getLayoutX() + Rank.getMinWidth());
                 name.setLayoutY(i * 30);
                 name.setMinSize(150, 30);
@@ -159,42 +162,42 @@ public class TeamRankView extends Accordion{
 
                 Button WinNum = new Button();
                 WinNum.setBackground(new Background(new BackgroundFill(Color.LAVENDERBLUSH,null,null)));
-                WinNum.setText("" + Teams[i].getWinNum());
+                WinNum.setText("" + teams.get(i).getWinNum());
                 WinNum.setLayoutX(name.getLayoutX() + name.getMinWidth());
                 WinNum.setLayoutY(i * 30);
                 WinNum.setMinSize(150, 30);
 
                 Button LoseNum = new Button();
                 LoseNum.setBackground(new Background(new BackgroundFill(Color.LAVENDERBLUSH,null,null)));
-                LoseNum.setText("" + Teams[i].getLoseNum());
+                LoseNum.setText("" + teams.get(i).getLoseNum());
                 LoseNum.setLayoutX(WinNum.getLayoutX() + WinNum.getMinWidth());
                 LoseNum.setLayoutY(i * 30);
                 LoseNum.setMinSize(150, 30);
 
                 Button DrawNum = new Button();
                 DrawNum.setBackground(new Background(new BackgroundFill(Color.LAVENDERBLUSH,null,null)));
-                DrawNum.setText("" + Teams[i].getDrawNum());
+                DrawNum.setText("" + teams.get(i).getDrawNum());
                 DrawNum.setLayoutX(LoseNum.getLayoutX() + LoseNum.getMinWidth());
                 DrawNum.setLayoutY(i * 30);
                 DrawNum.setMinSize(150, 30);
 
                 Button GoalNum = new Button();
                 GoalNum.setBackground(new Background(new BackgroundFill(Color.LAVENDERBLUSH,null,null)));
-                GoalNum.setText("" + Teams[i].getGoalNum());
+                GoalNum.setText("" + teams.get(i).getGoalNum());
                 GoalNum.setLayoutX(DrawNum.getLayoutX() + DrawNum.getMinWidth());
                 GoalNum.setLayoutY(i * 30);
                 GoalNum.setMinSize(150, 30);
 
                 Button GoalLostNum = new Button();
                 GoalLostNum.setBackground(new Background(new BackgroundFill(Color.LAVENDERBLUSH,null,null)));
-                GoalLostNum.setText("" + Teams[i].getGoalLostNum());
+                GoalLostNum.setText("" + teams.get(i).getGoalLostNum());
                 GoalLostNum.setLayoutX(GoalNum.getLayoutX() + GoalNum.getMinWidth());
                 GoalLostNum.setLayoutY(i * 30);
                 GoalLostNum.setMinSize(150, 30);
 
                 Button Score = new Button();
                 Score.setBackground(new Background(new BackgroundFill(Color.LAVENDERBLUSH,null,null)));
-                Score.setText("" + Teams[i].getTeamScore());
+                Score.setText("" + teams.get(i).getTeamScore());
                 Score.setLayoutX(GoalLostNum.getLayoutX() + GoalLostNum.getMinWidth());
                 Score.setLayoutY(i * 30);
                 Score.setMinSize(150, 30);

@@ -14,6 +14,8 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.util.List;
+
 import javafx.fxml.FXMLLoader;
 
 public class TodayBattleView extends Pane {
@@ -35,7 +37,7 @@ public class TodayBattleView extends Pane {
          * 生成所有赛程
          */
 
-        Battle[] battles = battleSql.getTodayBattle();
+        List<Battle> battles = battleSql.getTodayBattle();
         GridPane gridPane  = new GridPane();
         gridPane.setHgap(10);    //修改为battles.length/3
 
@@ -43,7 +45,7 @@ public class TodayBattleView extends Pane {
 
         String [] colors = new String[]{"panel-success","panel-info","panel-warning"};      //panel顶部颜色选择
 
-        if (battles[0] == null) {
+        if (battles.isEmpty()) {
 
             try {
                 gridPane = FXMLLoader.load(getClass().getResource("TodayBattleView.fxml"));
@@ -54,13 +56,13 @@ public class TodayBattleView extends Pane {
             FlowPane flowPane = new FlowPane();
         } else {
             gridPane.setVgap(3);
-            for (int i = 0; battles[i] != null; i++) {
-                Timestamp battleTime = battles[i].getBattleTime();  //对战时间
-                String teamA = battles[i].getTeamA();
-                String teamB = battles[i].getTeamB();
-                String battleSide = battles[i].getBattleSide();      //比赛场地
-                int battleResult = battles[i].getBattleResult();    //比赛结果，1表示A胜，0表示平局，-1表示A负
-                String battleScore = battles[i].getBattleScore();
+            for (int i = 0; i<battles.size(); i++) {
+                Timestamp battleTime = battles.get(i).getBattleTime();  //对战时间
+                String teamA = battles.get(i).getTeamA();
+                String teamB = battles.get(i).getTeamB();
+                String battleSide = battles.get(i).getBattleSide();      //比赛场地
+                int battleResult = battles.get(i).getBattleResult();    //比赛结果，1表示A胜，0表示平局，-1表示A负
+                String battleScore = battles.get(i).getBattleScore();
                 org.kordamp.bootstrapfx.scene.layout.Panel panel = new org.kordamp.bootstrapfx.scene.layout.Panel();
                 panel.getStyleClass().addAll("panel-primary", colors[i%3], "panel-default");
                 panel.setPadding(new Insets(20, 20, 20, 20));

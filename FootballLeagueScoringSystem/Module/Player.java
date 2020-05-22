@@ -1,5 +1,6 @@
 package FootballLeagueScoringSystem.Module;
 
+import java.security.PublicKey;
 import java.sql.*;
 
 /**
@@ -27,126 +28,10 @@ public class Player implements Comparable<Player> {
         this.photo_address = photo_address;
     }
 
-    public Player(String teamName, String name) {
-        /**@author:Long
-         * 仅传入队名，球员名字，从数据库中读取数据生成一个player对象
-         * */
-        Connection conn;
-        String driver = "com.mysql.cj.jdbc.Driver";
-        String url = "jdbc:mysql://localhost:3306/football?serverTimezone=Asia/Shanghai&characterEncoding=utf-8";
-        String user = "root";
-        String password = "123456";
-        try {
-            Class.forName(driver);
-            conn = DriverManager.getConnection(url, user, password);
-            Statement statement = conn.createStatement();
-            String sql = "select * from footballplayer where playerName='" + name + "' and playerteamName='" + teamName + "'";
-            ResultSet rs = statement.executeQuery(sql);
-            while (rs.next()) {
-                this.name = rs.getString("playerName");
-                this.teamName = rs.getString("playerTeamName");
-                this.foul = rs.getString("playerFoul");
-                this.score = rs.getInt("playerScore");
-                this.rank = rs.getInt("playerRank");
-                this.photo_address = rs.getString("playerPhoto");
-            }
-            rs.close();
-            conn.close();
-        } catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
-        }
-    }
 
-    public void updateData() {
-        /**
-         * @author :QUANHAO
-         * 将这个对象的更新数据写入数据库
-         * */
-        Connection conn;
-        String driver = "com.mysql.cj.jdbc.Driver";
-        String url = "jdbc:mysql://localhost:3306/football?serverTimezone=Asia/Shanghai&characterEncoding=utf-8";
-        String user = "root";
-        String password = "123456";
-        try {
-            Class.forName(driver);
-            conn = DriverManager.getConnection(url, user, password);
-            
-            Statement statement = conn.createStatement();
-            String sql = "update footballplayer set playername ='" +this.name
-                    +"',playerphoto='" +this.photo_address
-                    +"',playerteamName='" +this.teamName
-                    +"',playerscore=" +this.score
-                    +",playerfoul='" +this.foul
-                    +"',playerrank=" +this.rank
-                    +" where playerName='" + name + "' and playerTeam='" + teamName + "'";
-            statement.executeUpdate(sql);
-            conn.close();
-        } catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
-        }
-    }
 
-    public void insertData() {
-        /**
-         * @author :QUANHAO
-         * 将新生成的对象的数据写入数据库
-         * */
-        Connection conn;
-        String driver = "com.mysql.cj.jdbc.Driver";
-        String url = "jdbc:mysql://localhost:3306/football?serverTimezone=Asia/Shanghai&characterEncoding=utf-8";
-        String user = "root";
-        String password = "123456";
-        try {
-            Class.forName(driver);
-            conn = DriverManager.getConnection(url, user, password);
-            Statement statement = conn.createStatement();
-            String sql = "insert INTO footballplayer values ('"
-                    + this.name + "',"
-                    + "'" + this.photo_address + "',"
-                    + "'" + this.teamName + "',"
-                    + this.score + ","
-                    + "'" + this.foul + "',"
-                    + this.rank + ")";
-            statement.executeUpdate(sql);
-            conn.close();
-        } catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
-        }
-    }
 
-    public String[] getGoalInfo() {
-        /**
-         * @author :QUANHAO
-         * 从数据库中读取该球员的进球信息
-         * */
-        Connection conn;
-        String driver = "com.mysql.cj.jdbc.Driver";
-        String url = "jdbc:mysql://localhost:3306/football?serverTimezone=Asia/Shanghai&characterEncoding=utf-8";
-        String user = "root";
-        String password = "123456";
-        String[] result = new String[30];
-        try {
-            Class.forName(driver);
-            conn = DriverManager.getConnection(url, user, password);
-            Statement statement = conn.createStatement();
-            String sql = "select * from goaldetail where playerName = '" + this.name + "'";
-            ResultSet rs = statement.executeQuery(sql);
-            int i=0;
-            while (rs.next()) {
-                result[i] = "";
-                result[i] += rs.getString("time").split(" ")[0]+"\t";
-                result[i] += rs.getString("teamA")+"VS";
-                result[i] += rs.getString("teamB")+"\n进球时间：";
-                result[i] += rs.getString("time").split(" ")[1];
-                i++;
-            }
-            rs.close();
-            conn.close();
-        } catch (ClassNotFoundException | SQLException ex) {
-            ex.printStackTrace();
-        }
-        return result;
-    }
+
 
     public String getName() {
         return name;
@@ -166,6 +51,10 @@ public class Player implements Comparable<Player> {
 
     public int getRank() {
         return rank;
+    }
+
+    public String getFoul() {
+        return foul;
     }
 
     public void setName(String name) {

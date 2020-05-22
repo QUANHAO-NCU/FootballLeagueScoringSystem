@@ -107,7 +107,7 @@ public class PlayerView extends Pane {
         goalNum.setMinSize(playerName.getMinWidth(), playerName.getMinHeight());
         //右下，进球详细信息
         FlowPane container = new FlowPane();
-        String[] goalInfo = player.getGoalInfo();
+        String[] goalInfo = theLeague.getGoalInfo(player);
         if(goalInfo[0]==null){
             Button info = new Button();
             info.setFont(new Font("LiShu", 28));

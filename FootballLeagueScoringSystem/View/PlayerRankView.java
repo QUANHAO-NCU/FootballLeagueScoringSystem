@@ -13,6 +13,8 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import java.util.List;
+
 /**
  * @author QuanHao ,Long
  * 射手榜，显示球员排名
@@ -23,7 +25,7 @@ public class PlayerRankView extends AnchorPane {
         TitleLabels(AP0);
         ScrollPane SP = new ScrollPane();
         AnchorPane AP = new AnchorPane();
-        theLeague.playerSort();
+        theLeague.setPlayerRank();
         RankData(theLeague.getPlayers(), AP, stage, theLeague);
         SP.setLayoutX(0);
         SP.setLayoutY(36);
@@ -35,8 +37,8 @@ public class PlayerRankView extends AnchorPane {
         this.getChildren().add(AP0);
     }
 
-    private void RankData(Player[] players, AnchorPane AP, Stage stage, League theLeague) {
-        if (players[0] == null) {
+    private void RankData(List<Player> players, AnchorPane AP, Stage stage, League theLeague) {
+        if (players.isEmpty()) {
             //数据库中没有查到对应数据
             Button NoData = new Button();
             NoData.setText("没有找到对应数据！");
@@ -45,24 +47,24 @@ public class PlayerRankView extends AnchorPane {
             NoData.setMinSize(1200, 30);
             AP.getChildren().add(NoData);
         } else {
-            for (int i = 0; players[i] != null; i++) {
+            for (int i = 0; i<players.size(); i++) {
                 Button Rank = new Button();
                 Rank.setBackground(new Background(new BackgroundFill(Color.LAVENDER,null,null)));
-                Rank.setText("" + players[i].getRank());
+                Rank.setText("" + players.get(i).getRank());
                 Rank.setLayoutX(0);
                 Rank.setLayoutY(i * 30);
                 Rank.setMinSize(240, 36);
 
                 Button name = new Button();
                 name.setBackground(new Background(new BackgroundFill(Color.LAVENDER,null,null)));
-                name.setText(players[i].getName());
+                name.setText(players.get(i).getName());
                 name.setLayoutX(Rank.getLayoutX() + Rank.getMinWidth());
                 name.setLayoutY(i * 30);
                 name.setMinSize(Rank.getMinWidth(), Rank.getMinHeight());
 
                 Button teamName = new Button();
                 teamName.setBackground(new Background(new BackgroundFill(Color.LAVENDER,null,null)));
-                teamName.setText("" + players[i].getTeamName());
+                teamName.setText("" + players.get(i).getTeamName());
                 teamName.setLayoutX(name.getLayoutX() + name.getMinWidth());
                 teamName.setLayoutY(i * 30);
                 teamName.setMinSize(Rank.getMinWidth(), Rank.getMinHeight());
@@ -109,14 +111,14 @@ public class PlayerRankView extends AnchorPane {
 
                 Button GoalNum = new Button();
                 GoalNum.setBackground(new Background(new BackgroundFill(Color.LAVENDER,null,null)));
-                GoalNum.setText("" + players[i].getScore());
+                GoalNum.setText("" + players.get(i).getScore());
                 GoalNum.setLayoutX(teamName.getLayoutX() + teamName.getMinWidth());
                 GoalNum.setLayoutY(i * 30);
                 GoalNum.setMinSize(Rank.getMinWidth(), Rank.getMinHeight());
 
                 Button Score = new Button();
                 Score.setBackground(new Background(new BackgroundFill(Color.LAVENDER,null,null)));
-                Score.setText("" + players[i].getScore());
+                Score.setText("" + players.get(i).getScore());
                 Score.setLayoutX(GoalNum.getLayoutX() + GoalNum.getMinWidth());
                 Score.setLayoutY(i * 30);
                 Score.setMinSize(Rank.getMinWidth(), Rank.getMinHeight());

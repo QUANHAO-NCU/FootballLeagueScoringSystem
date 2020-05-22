@@ -16,8 +16,6 @@ import java.io.IOException;
 public class MainView extends TabPane {
     private League theLeague;
     public Stage stage;
-    private Button entryEven;//录入赛事信息
-    private Button autoPlay;//自动进行比赛->测试功能
 
     public MainView(League theLeague, Stage stage){
         this.theLeague = theLeague;
